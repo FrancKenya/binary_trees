@@ -23,8 +23,6 @@ if (check_left ==  check_right && binary_tree_is_full(tree))
 {
 return (1);
 }
-else
-return (0);
 }
 return (0);
 }
