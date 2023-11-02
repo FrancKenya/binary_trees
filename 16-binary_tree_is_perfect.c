@@ -9,56 +9,47 @@
 
 int binary_tree_is_perfect(const binary_tree_t *tree)
 {
-int check_left = 0, check_right = 0;
+	int full_height, i;
 
-if (!tree)
-{
-return (0);
-}
-if (tree->right && tree->left)
-{
-check_left = binary_tree_height(tree->left);
-check_right = binary_tree_height(tree->right);
-if (check_left ==  check_right && binary_tree_is_full(tree))
-{
-return (1);
-}
-}
-return (0);
-}
+	full_height = binary_tree_height(tree);
+	i = is_perfect(tree, full_height, 0);
+	return (i);
 
-/**
-* binary_tree_is_full - A function that checks if a binary tree is full
-* @tree: Points to the root node of the tree to check
-*
-* Return: Return 0 if tree is NULL
-*/
-
-int binary_tree_is_full(const binary_tree_t *tree)
-{
-int check_left = 0, check_right = 0;
-
-if (!tree)
-{
-return (0);
-}
-if (!tree->left && !tree->right)
-{
-return (1);
-}
-if (tree->left && tree->right)
-{
-check_left = binary_tree_is_full(tree->left);
-check_right = binary_tree_is_full(tree->right);
-return (check_right && check_left);
-}
-return (0);
 }
 /**
-* binary_tree_height - A function that measures height of a binary tree
-* @tree: points to the root of the tree
-* Return: height of the tree or 0 if tree is NULL
-*/
+ * is_perfect - A fuction that uses recursion to check if a tree is perfect
+ * @tree: Points to the current tree
+ * @full_height: height of the tree
+ * @level: Current level in the tree
+ *
+ * Return: 0 if failed and 1 if perfect
+ */
+int is_perfect(const binary_tree_t *tree, int full_height, int level)
+{
+	int i;
+
+	if (!tree)
+	{
+		return (level == full_height);
+	}
+	if (tree->left == NULL && tree->right == NULL)
+	{
+		return (level == full_height);
+	}
+	if (tree->left == NULL || tree->right == NULL)
+	{
+		return (0);
+	}
+	i = (is_perfect(tree->left, full_height, level + 1) &&
+	is_perfect(tree->right, full_height, level + 1));
+	return (i);
+}
+/**
+ * binary_tree_height - A fucntion that gets the height a BT
+ * @tree: Points to the root of the binary tree
+ *
+ * Return: height or 0 if tree is NULL
+ */
 
 size_t binary_tree_height(const binary_tree_t *tree)
 {
@@ -66,7 +57,7 @@ size_t right_height, left_height, i;
 
 if (!tree)
 {
-return (0);
+return (-1);
 }
 /* find right height of the tree */
 if (tree->right)
